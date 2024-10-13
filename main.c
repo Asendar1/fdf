@@ -32,12 +32,14 @@ void dda (p_data *img, int x0, int y0, int x1, int y1, void *mlx, void *mlx_win)
 	
 	float x = x0;
 	float y = y0;
+	int color = 100000;
 	while (i <= steps)
 	{
-		my_mlx_pixel_put(img, round(x), round(y), 0xFFFFFF);
+		my_mlx_pixel_put(img, round(x), round(y), color);
 		x += xInc;
 		y += yInc;
 		i++;
+		color += 100000;
 	}
 }
 
@@ -56,13 +58,16 @@ int main ()
 	
 	splitter(&cords);
 	mlx = mlx_init();
-	mlx_win = mlx_new_window(mlx, 800, 600, "DDA");
-	img.img = mlx_new_image(mlx, 800, 600);
+	mlx_win = mlx_new_window(mlx, 1920, 1080, "DDA");
+	img.img = mlx_new_image(mlx, 1920, 1080);
 	img.addr = mlx_get_data_addr(img.img, &img.bpp, &img.line_len, &img.endian);
 	dda(&img, x0, y0, x1, y1, mlx, mlx_win);
 	mlx_put_image_to_window(mlx, mlx_win, img.img, 0, 0);
+	dda(&img, 300, 300, 700, 700, mlx, mlx_win);
+	mlx_put_image_to_window(mlx, mlx_win, img.img, 0, 0);
+	dda(&img, 1000, 1000, 500, 300, mlx, mlx_win);
+	mlx_put_image_to_window(mlx, mlx_win, img.img, 0, 0);
 	mlx_loop(mlx);
-	
 
 	return (0);
 }

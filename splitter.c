@@ -6,46 +6,41 @@
 /*   By: hassende <hassende@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/12 16:59:15 by hassende          #+#    #+#             */
-/*   Updated: 2024/10/12 18:10:47 by hassende         ###   ########.fr       */
+/*   Updated: 2024/10/13 17:19:20 by hassende         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-void	splitter()
+void	splitter(fdf *cords)
 {
-	int fd;
-	int	ix;
-	int	iy;
-	int	yaxis;
-	int	xaxis;
+	int		fd;
+	int		i;
+	int		j;
 	char	*line;
+	char	**parse;
 	
-	yaxis = 0;
-	xaxis = 0;
-	ix = 0;
-	iy = 0;
-	fd = open ("fdf.fdf", O_RDONLY);
-	while ((line = get_next_line(fd)) != NULL)
-	{
-		char **split = ft_split(line, ' ');
-		iy = 0;
-		while (split[iy] != NULL)
-		{
-			ix = 0;
-			while (split[iy][ix] != '\0')
-			{
-				ft_printf("%c", split[iy][ix]);
-				ix++;
-			}
-			xaxis++;
-			iy++;
-		}
-			yaxis++;
-		free(split);
-		free(line);
-		ft_printf("\n");
-	}
-	ft_printf("\n%d, %d", yaxis, xaxis/yaxis);
+	cords->x = 0;
+	cords->y = 0;
+	
+	fd = open("fdf.fdf", O_RDONLY);
+	while ((line = get_next_line(fd)) != NULL) {
+        parse = ft_split(line, ' ');
+        if (parse == NULL) {
+            free(line);
+            continue;
+        }
+
+        i = 0;
+        while (parse[i] != NULL) {
+            cords->x++;
+            free(parse[i]);
+            i++;
+        }
+        free(parse);
+        free(line);
+        cords->y++;
+    }
 	close(fd);
+	printf("\ncolumns = %d, rows = %d\n", cords->x / cords->y, cords->y );
 }

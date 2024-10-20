@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   splitter.c                                         :+:      :+:    :+:   */
+/*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hassende <hassende@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/12 16:59:15 by hassende          #+#    #+#             */
-/*   Updated: 2024/10/13 17:19:20 by hassende         ###   ########.fr       */
+/*   Updated: 2024/10/20 14:48:17 by hassende         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-void	splitter(fdf *cords)
+void	parser(fdf *cords)
 {
 	int		fd;
 	int		i;
@@ -24,23 +24,10 @@ void	splitter(fdf *cords)
 	cords->y = 0;
 	
 	fd = open("fdf.fdf", O_RDONLY);
-	while ((line = get_next_line(fd)) != NULL) {
-        parse = ft_split(line, ' ');
-        if (parse == NULL) {
-            free(line);
-            continue;
-        }
-
-        i = 0;
-        while (parse[i] != NULL) {
-            cords->x++;
-            free(parse[i]);
-            i++;
-        }
-        free(parse);
-        free(line);
-        cords->y++;
-    }
+	while ((line = get_next_line(fd)) != NULL)
+    {
+		ft_atoi(line)
+	}
 	close(fd);
 	printf("\ncolumns = %d, rows = %d\n", cords->x / cords->y, cords->y );
 }

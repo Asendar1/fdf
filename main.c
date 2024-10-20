@@ -6,7 +6,7 @@
 /*   By: hassende <hassende@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/12 14:35:52 by hassende          #+#    #+#             */
-/*   Updated: 2024/10/13 17:47:02 by hassende         ###   ########.fr       */
+/*   Updated: 2024/10/20 14:46:41 by hassende         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,31 +43,31 @@ void dda (p_data *img, int x0, int y0, int x1, int y1, void *mlx, void *mlx_win)
 	}
 }
 
-
-int main ()
+int main (int argc, char *argv[])
 {
-	void *mlx;
-	void *mlx_win;
+	mlx_data mlx;
 	p_data	img;
 	fdf	cords;
 
-	int	x0 = 200;
-	int	y0 = 200;
-	int x1 = 500;
-	int y1 = 300;
+	int	x0 = 100;
+	int	y0 = 100;
+	parser(&cords);
+	int x1 = cords.x * 100;
+	int y1 = cords.y * 100;
 	
-	splitter(&cords);
-	mlx = mlx_init();
-	mlx_win = mlx_new_window(mlx, 1920, 1080, "DDA");
-	img.img = mlx_new_image(mlx, 1920, 1080);
+	mlx.mlx = mlx_init();
+	mlx.mlx_win = mlx_new_window(mlx.mlx, 1920, 1080, "DDA");
+	img.img = mlx_new_image(mlx.mlx, 1920, 1080);
 	img.addr = mlx_get_data_addr(img.img, &img.bpp, &img.line_len, &img.endian);
-	dda(&img, x0, y0, x1, y1, mlx, mlx_win);
-	mlx_put_image_to_window(mlx, mlx_win, img.img, 0, 0);
-	dda(&img, 300, 300, 700, 700, mlx, mlx_win);
-	mlx_put_image_to_window(mlx, mlx_win, img.img, 0, 0);
-	dda(&img, 1000, 1000, 500, 300, mlx, mlx_win);
-	mlx_put_image_to_window(mlx, mlx_win, img.img, 0, 0);
-	mlx_loop(mlx);
-
+	dda(&img, x0, y0, x1, y1, mlx.mlx, mlx.mlx_win);
+	mlx_put_image_to_window(mlx.mlx, mlx.mlx_win, img.img, 0, 0);
+	// dda(&img, 300, 300, 700, 700, mlx.mlx, mlx.mlx_win);
+	// mlx_put_image_to_window(mlx.mlx, mlx.mlx_win, img.img, 0, 0);
+	// dda(&img, 1000, 1000, 500, 300, mlx.mlx, mlx.mlx_win);
+	// mlx_put_image_to_window(mlx.mlx, mlx.mlx_win, img.img, 0, 0);
+	mlx_hook(mlx.mlx_win, 4, 1L<<2, close_window, &mlx);
+	mlx_loop(mlx.mlx);
+	// mlx_hook(mlx.mlx_win, 2, 1L<<0, close_window, &mlx);
+	mlx_loop_end(mlx.mlx);
 	return (0);
 }

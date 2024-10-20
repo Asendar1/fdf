@@ -6,7 +6,7 @@
 /*   By: hassende <hassende@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/12 16:31:22 by hassende          #+#    #+#             */
-/*   Updated: 2024/10/13 16:40:27 by hassende         ###   ########.fr       */
+/*   Updated: 2024/10/20 14:32:07 by hassende         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,13 @@ typedef struct fdf
 	int z;
 }	 		fdf;
 
-void	splitter(fdf *cords);
+typedef struct 
+{
+	void *mlx;
+	void *mlx_win;
+}		mlx_data;
 
+void	parser(fdf *cords);
+int		close_window(int keycode, void *mlx, void *mlx_win);
 
 #endif

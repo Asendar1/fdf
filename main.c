@@ -3,16 +3,53 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hassende <hassende@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hamzah <hamzah@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/12 14:35:52 by hassende          #+#    #+#             */
-/*   Updated: 2024/10/20 14:46:41 by hassende         ###   ########.fr       */
+/*   Updated: 2024/10/25 23:23:14 by hamzah           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-void my_mlx_pixel_put(p_data *data, int x, int y, int color)
+static t_mlx	*fdf_init(const char *FdF_file)
+{
+	t_mlx	*mlx;
+	char	*title;
+	title = ft_strjoin("FdF - ", FdF_file);
+	mlx = malloc(sizeof(t_mlx));
+	if (!mlx)
+		ft_return_error("malloc error");
+	mlx->mlx = mlx_init();
+	if(!mlx->mlx)
+		ft_return_error("Error in mlx_init()");
+	mlx->mlx_win = mlx_new_window(mlx->mlx, WIDTH, HEIGHT, title);
+	if (!mlx->mlx_win)
+		ft_return_error("error in mlx_win()");
+	free(title);
+	mlx->img = mlx_new_image(mlx->mlx, WIDTH, HEIGHT);
+	if (!mlx->img)
+		ft_return_error("Error in mlx_new_image()");
+	mlx->addr = mlx_get_data_addr(mlx->img, &mlx->bpp, &mlx->line_len, &mlx->endian);
+	return (mlx);
+}
+
+static t_mapdata	*ft_map_init()
+{
+	t_mapdata *map;
+	
+	map = malloc(sizeof(t_mapdata));
+	if (!map)
+		ft_return_error("error initalizing map");
+	map->X_axis = 0;
+	map->Y_axis = 0;
+	map->array = NULL;
+	map->Z_axis_min = 0;
+	map->Z_axis_max = 0;
+	return (map);
+}
+
+void my_mlx_pixel_put(t_mlx *data, int x, int y, int color)
 {
 	char	*dst;
 
@@ -20,7 +57,7 @@ void my_mlx_pixel_put(p_data *data, int x, int y, int color)
 	*(unsigned int*)dst = color;
 }
 
-void dda (p_data *img, int x0, int y0, int x1, int y1, void *mlx, void *mlx_win)
+void dda (t_mlx *img, int x0, int y0, int x1, int y1, void *mlx, void *mlx_win)
 {
 	int dx = x1 - x0;
 	int dy = y1 - y0;
@@ -45,29 +82,14 @@ void dda (p_data *img, int x0, int y0, int x1, int y1, void *mlx, void *mlx_win)
 
 int main (int argc, char *argv[])
 {
-	mlx_data mlx;
-	p_data	img;
-	fdf	cords;
-
-	int	x0 = 100;
-	int	y0 = 100;
-	parser(&cords);
-	int x1 = cords.x * 100;
-	int y1 = cords.y * 100;
+	t_mlx	*mlx;
 	
-	mlx.mlx = mlx_init();
-	mlx.mlx_win = mlx_new_window(mlx.mlx, 1920, 1080, "DDA");
-	img.img = mlx_new_image(mlx.mlx, 1920, 1080);
-	img.addr = mlx_get_data_addr(img.img, &img.bpp, &img.line_len, &img.endian);
-	dda(&img, x0, y0, x1, y1, mlx.mlx, mlx.mlx_win);
-	mlx_put_image_to_window(mlx.mlx, mlx.mlx_win, img.img, 0, 0);
-	// dda(&img, 300, 300, 700, 700, mlx.mlx, mlx.mlx_win);
-	// mlx_put_image_to_window(mlx.mlx, mlx.mlx_win, img.img, 0, 0);
-	// dda(&img, 1000, 1000, 500, 300, mlx.mlx, mlx.mlx_win);
-	// mlx_put_image_to_window(mlx.mlx, mlx.mlx_win, img.img, 0, 0);
-	mlx_hook(mlx.mlx_win, 4, 1L<<2, close_window, &mlx);
-	mlx_loop(mlx.mlx);
-	// mlx_hook(mlx.mlx_win, 2, 1L<<0, close_window, &mlx);
-	mlx_loop_end(mlx.mlx);
-	return (0);
+	if (argc == 2)
+	{
+		mlx = fdf_init(argv[1]);
+		mlx->map = ft_map_init();
+		ft_check_argv(argv[1],mlx->map);
+	}
+	else
+		ft_return_error("Usage: ./fdf <filename>");
 }

@@ -6,7 +6,7 @@
 /*   By: hamzah <hamzah@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/12 16:31:22 by hassende          #+#    #+#             */
-/*   Updated: 2024/10/26 00:11:06 by hamzah           ###   ########.fr       */
+/*   Updated: 2024/10/26 16:38:20 by hamzah           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,9 +67,13 @@ typedef struct s_mlx
 }		t_mlx;
 
 void	ft_check_argv(char *filename, t_mapdata *map);
-int		close_window(int keycode, void *mlx, void *mlx_win);
 void    ft_return_error(const char *err_msg);
-int ft_hex_to_int(const char *hex_str);
+int 	ft_hex_to_int(const char *hex_str);
+int 	close_window(void *params);
+void	ft_draw_line(int *p1, int *p2, t_mlx *mlx);
+void	ft_draw(t_mapdata *map, t_mlx *mlx);
+void	my_mlx_pixel_put(t_mlx *data, int x, int y, int color);
+void	ft_controls(t_mlx *mlx);
 
 
 #endif

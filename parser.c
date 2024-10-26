@@ -6,7 +6,7 @@
 /*   By: hamzah <hamzah@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/12 16:59:15 by hassende          #+#    #+#             */
-/*   Updated: 2024/10/26 00:12:36 by hamzah           ###   ########.fr       */
+/*   Updated: 2024/10/26 13:58:36 by hamzah           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ static int	ft_get_width(char *filename)
 		free(line);
 		ft_return_error("invalid map (empty)");
 	}
+	i = -1;
 	while (line[++i])
 		if (line[i] != ' ' && (line[i + 1] == ' ' || line[i + 1] == '\0'))
 			width++;
@@ -85,6 +86,28 @@ static void ft_fill_table(int **array, char *line, int width)
 	if (i != width || split[i])
 		ft_return_error("error: fdf file in incorrect");
 	free(split[i]);
+	free(split);
+}
+
+static void ft_get_z_min_max (t_mapdata *map)
+{
+	int i;
+	int j;
+
+	map->Z_axis_min = map->array[0][0][0];
+	map->Z_axis_max = map->array[0][0][0];
+	i = -1;
+	while (++i < map->Y_axis)
+	{
+		j = -1;
+		while (++j < map->X_axis)
+		{
+			if (map->array[i][j][0] < map->Z_axis_min)
+				map->Z_axis_min = map->array[i][j][0];
+			if (map->array[i][j][0] > map->Z_axis_max)
+				map->Z_axis_max = map->array[i][j][0];
+		}
+	}
 }
 
 void	ft_check_argv(char *filename, t_mapdata *map)
@@ -113,6 +136,6 @@ void	ft_check_argv(char *filename, t_mapdata *map)
 		ft_fill_table(map->array[i], line, map->X_axis);
 		free(line);
 	}
-	ft_get_z_min_man(map);
+	ft_get_z_min_max(map);
 	close(fd);
 }

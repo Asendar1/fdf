@@ -6,7 +6,7 @@
 /*   By: hamzah <hamzah@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/12 14:35:52 by hassende          #+#    #+#             */
-/*   Updated: 2024/10/25 23:23:14 by hamzah           ###   ########.fr       */
+/*   Updated: 2024/10/26 20:12:36 by hamzah           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ static t_mlx	*fdf_init(const char *FdF_file)
 {
 	t_mlx	*mlx;
 	char	*title;
+	
 	title = ft_strjoin("FdF - ", FdF_file);
 	mlx = malloc(sizeof(t_mlx));
 	if (!mlx)
@@ -25,12 +26,13 @@ static t_mlx	*fdf_init(const char *FdF_file)
 		ft_return_error("Error in mlx_init()");
 	mlx->mlx_win = mlx_new_window(mlx->mlx, WIDTH, HEIGHT, title);
 	if (!mlx->mlx_win)
-		ft_return_error("error in mlx_win()");
+		ft_return_error("error in mlx_new_widnow()");
 	free(title);
 	mlx->img = mlx_new_image(mlx->mlx, WIDTH, HEIGHT);
 	if (!mlx->img)
 		ft_return_error("Error in mlx_new_image()");
 	mlx->addr = mlx_get_data_addr(mlx->img, &mlx->bpp, &mlx->line_len, &mlx->endian);
+	mlx->map = NULL;
 	return (mlx);
 }
 
@@ -57,28 +59,28 @@ void my_mlx_pixel_put(t_mlx *data, int x, int y, int color)
 	*(unsigned int*)dst = color;
 }
 
-void dda (t_mlx *img, int x0, int y0, int x1, int y1, void *mlx, void *mlx_win)
-{
-	int dx = x1 - x0;
-	int dy = y1 - y0;
-	int m = dx / dy;
-	int steps = fmax(abs(dx), abs(dy));
-	int i = 0;
-	float xInc = (float)dx / (float)steps;
-	float yInc = (float)dy / (float)steps;
+// void dda (t_mlx *img, int x0, int y0, int x1, int y1, void *mlx, void *mlx_win)
+// {
+// 	int dx = x1 - x0;
+// 	int dy = y1 - y0;
+// 	int m = dx / dy;
+// 	int steps = fmax(abs(dx), abs(dy));
+// 	int i = 0;
+// 	float xInc = (float)dx / (float)steps;
+// 	float yInc = (float)dy / (float)steps;
 	
-	float x = x0;
-	float y = y0;
-	int color = 100000;
-	while (i <= steps)
-	{
-		my_mlx_pixel_put(img, round(x), round(y), color);
-		x += xInc;
-		y += yInc;
-		i++;
-		color += 100000;
-	}
-}
+// 	float x = x0;
+// 	float y = y0;
+// 	int color = 100000;
+// 	while (i <= steps)
+// 	{
+// 		my_mlx_pixel_put(img, round(x), round(y), color);
+// 		x += xInc;
+// 		y += yInc;
+// 		i++;
+// 		color += 100000;
+// 	}
+// }
 
 int main (int argc, char *argv[])
 {
@@ -89,6 +91,10 @@ int main (int argc, char *argv[])
 		mlx = fdf_init(argv[1]);
 		mlx->map = ft_map_init();
 		ft_check_argv(argv[1],mlx->map);
+		ft_controls(mlx);
+		// ft_draw(mlx->map, mlx);
+		mlx_loop(mlx->mlx);
+		// close_window(mlx);
 	}
 	else
 		ft_return_error("Usage: ./fdf <filename>");

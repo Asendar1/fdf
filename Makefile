@@ -2,7 +2,7 @@ SRCS = main.c parser.c control.c utils.c draw.c draw_algo.c
 
 NAME = fdf
 CC = cc
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -g
 LIBS = -L. -lgnl -lft -lftprintf -Lminilibx-linux -lmlx -lX11 -lXext -lm
 OBJS = $(SRCS:.c=.o)
 

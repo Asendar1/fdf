@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hamzah <hamzah@student.42.fr>              +#+  +:+       +#+        */
+/*   By: hassende <hassende@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/12 14:35:52 by hassende          #+#    #+#             */
-/*   Updated: 2024/10/26 20:12:36 by hamzah           ###   ########.fr       */
+/*   Updated: 2024/10/27 14:24:32 by hassende         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,11 +51,11 @@ static t_mapdata	*ft_map_init()
 	return (map);
 }
 
-void my_mlx_pixel_put(t_mlx *data, int x, int y, int color)
+void my_mlx_pixel_put(t_mlx *mlx, int x, int y, int color)
 {
 	char	*dst;
 
-	dst = data->addr + (y * data->line_len + x * (data->bpp / 8));
+	dst = mlx->addr + (y * mlx->line_len + x * (mlx->bpp / 8));
 	*(unsigned int*)dst = color;
 }
 
@@ -92,9 +92,10 @@ int main (int argc, char *argv[])
 		mlx->map = ft_map_init();
 		ft_check_argv(argv[1],mlx->map);
 		ft_controls(mlx);
-		// ft_draw(mlx->map, mlx);
+		// my_mlx_pixel_put(mlx, 1, 1, 0x00ff0000);
+		// mlx_put_image_to_window(mlx->mlx, mlx-> mlx_win, mlx->img, 0, 0);
+		ft_draw(mlx->map, mlx);
 		mlx_loop(mlx->mlx);
-		// close_window(mlx);
 	}
 	else
 		ft_return_error("Usage: ./fdf <filename>");

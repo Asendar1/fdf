@@ -3,22 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   control.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hamzah <hamzah@student.42.fr>              +#+  +:+       +#+        */
+/*   By: hassende <hassende@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 14:38:08 by hassende          #+#    #+#             */
-/*   Updated: 2024/10/26 20:10:37 by hamzah           ###   ########.fr       */
+/*   Updated: 2024/10/27 11:45:37 by hassende         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 	
-int close_window(void *params)
+int close_window(t_mlx *mlx)
 {
-	t_mlx *mlx;
 	int 	y;
 	int 	x;
 
-	mlx = (t_mlx *)params;
 	mlx_destroy_image(mlx->mlx, mlx->img);
 	mlx_destroy_window(mlx->mlx, mlx->mlx_win);
 	mlx_destroy_display(mlx->mlx);
@@ -37,7 +35,15 @@ int close_window(void *params)
 	exit(0);
 }
 
+int	key_down_hook(int key, t_mlx *mlx)
+{
+	if (key == XK_Escape)
+		close_window(mlx);
+	return (0);
+}
+
 void	ft_controls(t_mlx *mlx)
 {
-	mlx_hook(mlx->mlx_win, 2, 1L << 0, close_window, mlx);
+	mlx_hook(mlx->mlx_win, 2, 1L << 0, key_down_hook, mlx);
+	mlx_hook(mlx->mlx_win, 17, 0, close_window, mlx);
 }

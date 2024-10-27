@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fdf.h                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hamzah <hamzah@student.42.fr>              +#+  +:+       +#+        */
+/*   By: hassende <hassende@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/12 16:31:22 by hassende          #+#    #+#             */
-/*   Updated: 2024/10/26 16:38:20 by hamzah           ###   ########.fr       */
+/*   Updated: 2024/10/27 11:42:21 by hassende         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 #include <unistd.h>
 #include <string.h>
 #include <errno.h>
+#include <X11/keysym.h>
 
 #include "gnl/get_next_line_bonus.h"
 #include "libft/libft.h"
@@ -69,7 +70,7 @@ typedef struct s_mlx
 void	ft_check_argv(char *filename, t_mapdata *map);
 void    ft_return_error(const char *err_msg);
 int 	ft_hex_to_int(const char *hex_str);
-int 	close_window(void *params);
+int 	close_window(t_mlx *mlx);
 void	ft_draw_line(int *p1, int *p2, t_mlx *mlx);
 void	ft_draw(t_mapdata *map, t_mlx *mlx);
 void	my_mlx_pixel_put(t_mlx *data, int x, int y, int color);
